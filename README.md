@@ -1,7 +1,23 @@
-# Vue 3 + Vite
+# Geonames Vue
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+"Reverse/Geocoding Webservices": this repository contains the Geonames front-end part, built on a VueJS 3.3 + Vite 5.0 base.
 
-## Recommended IDE Setup
+Very early alpha version, made by a stagios who does know know anything about Vue.js and frontend in general.
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Deployment
+
+```bash
+  git clone https://github.com/Gatoreviews/geonames-vue.git
+  yarn run dev
+```
+will run on 
+```bash
+  http://localhost:5173/
+```
+
+## What does it do ?
+For now there is a simple "fetch" function in the only "Fetchtest" component.
+
+It will try to reach for the Symfony Geonames API (see https://github.com/Gatoreviews/geonames) and log the JSON response of the call.
+
+(`[{"country_code":"FR"}]` is returned since the `fetch()` method tries to reach for `/findCountryCodeByName/France`);
