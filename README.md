@@ -4,6 +4,12 @@
 
 Very early alpha version, made by a stagios who does know know anything about Vue.js and frontend in general.
 
+## Schema
+
+Instead of using Symfony's twig render functions, we decided to use it as a pure API, a headless system which we plug a Vue.js app onto.
+
+![Geonames-readme-schema](src/assets/readme_schema.jpg)
+
 ## Deployment
 
 ```bash
