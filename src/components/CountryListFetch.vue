@@ -12,8 +12,7 @@ const options = ref([
     { text: 'DE', value: 'de' }
 ]);
 
-
-async function getCountryListByLocale() {
+async function loadCountryListByLocale() {
     try {
         const response = await fetch(
             apiURL + '/country/list/' + locale.value,
@@ -22,13 +21,12 @@ async function getCountryListByLocale() {
                 headers: { 'Authorization': `Basic ${apiToken}` }
             }
         );
-        responseContent = await response.json();
+        responseContent.value = await response.json();
         console.log(responseContent);
     } catch (error) {
-        responseContent = 'Error! Could not reach the API. ' + error;
+        responseContent = 'Error! Could not reach the API : ' + error;
         console.error(error);
     }
-    return responseContent
 };
 
 onUpdated(() => {
@@ -46,7 +44,7 @@ onUpdated(() => {
                 {{ option.text }}
             </option>
         </select>
-        <button @click="getCountryListByLocale">Display</button>
+        <button @click="loadCountryListByLocale">Display</button>
     </div>
     <div class="responsecontent" v-if="responseContent">
         <p id="responsetext">Response : <br /> {{ responseContent }}</p>
