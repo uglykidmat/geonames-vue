@@ -22,8 +22,8 @@ will run on
 ```
 
 ## What does it do ?
-For now there is a simple "fetch" function in the only "Fetchtest" component.
+For now there is a simple "fetch" function in the only "CountryListFetch" component.
 
 It will try to reach for the Symfony Geonames API (see https://github.com/Gatoreviews/geonames) and log the JSON response of a call.
 
-(for now the fetch methods reaches the `/country/list/{locale}` endpoint and logs the result in the console);
+(for now the fetch methods reaches the `/country/list/{locale}` endpoint and logs the result in the console. The display in a <div> with a loader is still under development)

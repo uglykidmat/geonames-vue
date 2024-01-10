@@ -1,19 +1,19 @@
 <script setup>
+
+//TODO - SEARCH WITH JSON INPUT ?
+// SEARCH WITH 2 INPUTS LAT/LNG ?
 import { ref } from 'vue';
 
-const componentName = 'Fetchtest';
-const apiToken = 'Z2F0b3I6Z3RyUHdkNzMh';
-const locale = ref('');
-const options = ref([
-    { text: 'FR', value: 'fr' },
-    { text: 'EN', value: 'en' },
-    { text: 'DE', value: 'de' }
-]);
+const componentName = 'SubdivisionSearch';
+const apiToken = import.meta.env.VITE_GEONAMES_TOKEN;
+const apiURL = import.meta.env.VITE_GEONAMES_URL;
+const request = ref('');
+let responseContent = ref('');
 
-async function getCountryListByLocale() {
+async function SubdivisionSearch() {
     try {
         const response = await fetch(
-            `https://geonames-preprod.osc-fr1.scalingo.io/country/list/${locale.value}`,
+            apiURL + '/geonames/search',
             {
                 method: "GET",
                 headers: { 'Authorization': 'Basic ' + `${apiToken}` }
