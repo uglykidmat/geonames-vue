@@ -1,12 +1,12 @@
 <script setup>
-import Fetchtest from './components/Fetchtest.vue';
+import CountryListFetch from './components/CountryListFetch.vue';
 </script>
 
 <template>
   <header>
     <h1>Geonames <span class="logo">🌐</span></h1>
   </header>
-  <Fetchtest />
+  <CountryListFetch />
 </template>
 
 <style scoped>
