@@ -15,9 +15,11 @@ const options = ref([
 
 async function loadCountryListByLocale() {
     try {
+        responseContent.value = null;
         loader.value = true;
         const response = await fetch(
-            apiURL + '/country/list/' + locale.value,
+            // apiURL + '/country/list/' + locale.value,
+            'https://127.0.0.1:8000/country/list/' + locale.value,
             {
                 method: "GET",
                 headers: { 'Authorization': `Basic ${apiToken}` }
@@ -25,7 +27,7 @@ async function loadCountryListByLocale() {
         );
         responseContent.value = await response.json();
     } catch (error) {
-        responseContent = 'Error! Could not reach the API : ' + error;
+        responseContent.value = 'Error! Could not reach the API : ' + error;
         console.error(error);
     }
     loader.value = false;
@@ -59,7 +61,7 @@ onUpdated(() => {
     </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 ul {
     padding: 0;
     margin: 0.5em auto;
@@ -77,7 +79,7 @@ li b {
 }
 
 .loader {
-    margin-top: 0.5em;
+    margin-top: 1em;
     width: 48px;
     height: 48px;
     border: 5px solid #FFF;

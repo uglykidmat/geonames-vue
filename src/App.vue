@@ -1,58 +1,55 @@
 <script setup>
-import CountryListFetch from './components/CountryListFetch.vue';
-import { useRouter, useRoute } from 'vue-router';
 import Sidebar from './components/Sidebar.vue';
-
 </script>
 
 <template>
-  <!--<header>
-      <h1>Geonames <span class="logo">🌐</span></h1>
-    </header>
-    <nav class="menu">
-      <ul>
-        <li><a href="#">Export</a></li>
-        <li><a href="#">Translations</a></li>
-      </ul>
-    </nav>
-    <CountryListFetch />
-  -->
-  <!-- <RouterLink></RouterLink>
-  <RouterLink></RouterLink> -->
   <Sidebar />
-  <RouterView />
-  <!-- <router-view /> -->
+  <router-view />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  /* padding: 1.5em; */
-  will-change: filter;
-  transition: filter 300ms;
+<style lang="scss">
+:root {
+  --primary: #4ade80;
+  --primary-alt: #22c55e;
+  --grey: #64748b;
+  --dark: #1e293b;
+  --dark-alt: #334155;
+  --light: #f1f5f9;
+  --sidebar-width: 300px;
 }
 
-.logo:hover {
-  filter: drop-shadow(0 0 1em #ffffff);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-
-ul {
+* {
+  margin: 0;
   padding: 0;
-  margin: 0.5em auto;
-  border: 1px solid transparent;
-  border-color: #f9f9f9;
-  border-radius: 0.2em;
+  box-sizing: border-box;
+  font-family: 'Fira sans', sans-serif;
 }
 
-li {
-  list-style-type: none;
+body {
+  background: var(--light);
 }
 
-li b {
-  color: #ffffff;
+button {
+  cursor: pointer;
+  appearance: none;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+.app {
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+  text-align: center;
+
+  main {
+    flex: 1 1 0;
+    padding: 2rem;
+
+    @media (max-width: 1024px) {
+      padding-left: 6rem;
+    }
+  }
 }
 </style>
