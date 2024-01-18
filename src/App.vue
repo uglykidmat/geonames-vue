@@ -16,6 +16,8 @@ import Sidebar from './components/Sidebar.vue';
   --grey: #024959;
   --dark: #012E40;
   --dark-alt: #334155;
+  --grey-light-bkgnd: #d9d9d9;
+  --grey-dark-bkgnd: #1d1d1f;
   --light: #f1f1f1;
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
@@ -47,6 +49,7 @@ button {
 
 .app {
   display: flex;
+  flex: 1 1 0;
   min-width: 320px;
   min-height: 100vh;
   text-align: center;
@@ -54,6 +57,11 @@ button {
   main {
 
     padding: 1em;
+    margin: 0 auto 0 auto;
+    //align-items: center;
+    justify-content: center;
+    justify-self: center;
+    align-items: center;
 
     @media (max-width: 1024px) {
       padding-left: 6rem;
@@ -61,17 +69,21 @@ button {
   }
 }
 
-h3,
 .button .text {
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
 }
 
+h2 {
+  color: var(--dark);
+  font-size: 3rem;
+}
+
 h3 {
   color: var(--grey);
-  font-size: 0.875rem;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
+  font-size: 1.5rem;
+  //margin-bottom: 0.5rem;
+  //text-transform: uppercase;
 }
 
 a {
@@ -86,5 +98,27 @@ a:hover {
 
 p {
   font-family: 'Overpass', sans-serif;
+}
+
+.loader {
+  margin-top: 1em;
+  width: 48px;
+  height: 48px;
+  border: 5px solid var(--dark);
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

@@ -7,7 +7,6 @@
             </button>
 
         </div>
-        <!-- <h3>Menu</h3> -->
         <div class="menu">
             <router-link class="button" to="/">
                 <span class="material-symbols-outlined material-icons">home</span>
@@ -51,14 +50,6 @@ aside {
         display: none;
         max-width: fit-content;
         transition: 0.2s ease-in-out;
-    }
-
-    .flex {
-        flex: 1 1 0%;
-    }
-
-    .logo {
-        margin-bottom: 1rem;
     }
 
     .menu-toggle-wrap {
@@ -150,14 +141,15 @@ aside {
         }
 
         .menu-toggle-wrap {
-            top: -3rem;
+            top: -2.3rem;
+            right: 0.6rem;
+            margin-bottom: -1rem;
 
             .menu-toggle {
                 transform: rotate(-180deg);
             }
         }
 
-        h3,
         .button .text {
             opacity: 1;
         }

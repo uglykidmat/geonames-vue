@@ -43,12 +43,12 @@ onUpdated(() => {
     <div>
         <p>Afficher la liste en : {{ locale }}</p>
         <select v-model="locale">
-            <option disabled value="">Please select a locale</option>
+            <option disabled value="">Sélectionner la langue</option>
             <option v-for="option in options" :value="option.value">
                 {{ option.text }}
             </option>
         </select>
-        <button @click="loadCountryListByLocale">Display</button>
+        <button @click="loadCountryListByLocale">Afficher</button>
     </div>
 
     <span class="loader" v-if="loader"></span>
@@ -102,28 +102,6 @@ button {
         color: var(--light);
         background-color: var(--dark);
         transition: 0.2s ease-in-out;
-    }
-}
-
-.loader {
-    margin-top: 1em;
-    width: 48px;
-    height: 48px;
-    border: 5px solid var(--dark);
-    border-bottom-color: transparent;
-    border-radius: 50%;
-    display: inline-block;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-}
-
-@keyframes rotation {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
     }
 }
 </style>
