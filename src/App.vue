@@ -55,7 +55,6 @@ button {
   text-align: center;
 
   main {
-
     padding: 1em;
     margin: 0 auto 0 auto;
     //align-items: center;
@@ -63,8 +62,8 @@ button {
     justify-self: center;
     align-items: center;
 
-    @media (max-width: 1024px) {
-      padding-left: 6rem;
+    @media (min-width: 1100px) {
+      transition: 0.2s ease-in-out;
     }
   }
 }
@@ -82,8 +81,6 @@ h2 {
 h3 {
   color: var(--grey);
   font-size: 1.5rem;
-  //margin-bottom: 0.5rem;
-  //text-transform: uppercase;
 }
 
 a {
