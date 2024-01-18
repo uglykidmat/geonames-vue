@@ -1,17 +1,13 @@
 <template>
     <aside :class="`${is_expanded && 'is-expanded'}`">
-        <!-- <div class="logo">
-            <span>🌐</span>
-        </div> -->
         <h1>Geonames.</h1>
-
         <div class="menu-toggle-wrap">
             <button class="menu-toggle" @click="ToggleMenu">
                 <span class="material-symbols-outlined material-icons">keyboard_double_arrow_right</span>
             </button>
 
         </div>
-        <h3>Menu</h3>
+        <!-- <h3>Menu</h3> -->
         <div class="menu">
             <router-link class="button" to="/">
                 <span class="material-symbols-outlined material-icons">home</span>
@@ -31,9 +27,10 @@
 
 <script setup>
 import { ref } from 'vue';
-const is_expanded = ref(false);
+const is_expanded = ref(localStorage.getItem("is_expanded") === "true");
 const ToggleMenu = () => {
     is_expanded.value = !is_expanded.value
+    localStorage.setItem("is_expanded", is_expanded.value)
 }
 </script>
 
@@ -41,16 +38,20 @@ const ToggleMenu = () => {
 aside {
     display: flex;
     flex-direction: column;
-
-    background-color: var(--dark);
-    color: var(--light);
-    //min-width: fit-content;
+    background-color: var(--light);
+    color: var(--dark);
     width: calc(2rem + 32px);
     overflow: hidden;
     min-height: 100vh;
     padding: 1rem;
-
     transition: 0.2s ease-in-out;
+
+
+    h1 {
+        display: none;
+        max-width: fit-content;
+        transition: 0.2s ease-in-out;
+    }
 
     .flex {
         flex: 1 1 0%;
@@ -74,7 +75,7 @@ aside {
 
             .material-icons {
                 font-size: 2rem;
-                color: var(--light);
+                color: var(--dark);
                 transition: 0.2s ease-out;
             }
 
@@ -85,23 +86,6 @@ aside {
                 }
             }
         }
-    }
-
-    h1 {
-        display: none;
-    }
-
-    h3,
-    .button .text {
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out;
-    }
-
-    h3 {
-        color: var(--grey);
-        font-size: 0.875rem;
-        margin-bottom: 0.5rem;
-        text-transform: uppercase;
     }
 
     .menu {
@@ -117,12 +101,12 @@ aside {
 
             .material-icons {
                 font-size: 2rem;
-                color: var(--light);
+                color: var(--dark);
                 transition: 0.2s ease-in-out;
             }
 
             .text {
-                color: var(--light);
+                color: var(--dark);
                 transition: 0.2s ease-in-out;
             }
 
@@ -131,17 +115,17 @@ aside {
 
                 .material-icons,
                 .text {
-                    color: var(--primary);
+                    color: var(--light);
                 }
             }
 
             &.router-link-exact-active {
                 background-color: var(--dark-alt);
-                border-right: 5px solid var(--primary);
+                border-right: 5px solid var(--dark);
 
                 .material-icons,
                 .text {
-                    color: var(--primary);
+                    color: var(--light);
                 }
             }
         }
