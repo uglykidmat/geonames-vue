@@ -1,6 +1,6 @@
 <template>
-    <main class="translations">
-        <h2>Transations</h2>
+    <div class="translations">
+        <h2>Translations</h2>
         <p>Geonames locales</p>
-    </main>
+    </div>
 </template>
