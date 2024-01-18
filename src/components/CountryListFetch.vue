@@ -6,6 +6,7 @@ const apiToken = import.meta.env.VITE_GEONAMES_TOKEN;
 const apiURL = import.meta.env.VITE_GEONAMES_URL;
 const locale = ref('');
 const responseContent = ref('');
+const errorHappened = ref(false);
 const loader = ref(false);
 const options = ref([
     { text: 'FR', value: 'fr' },
@@ -26,15 +27,16 @@ async function loadCountryListByLocale() {
             }
         );
         responseContent.value = await response.json();
+
     } catch (error) {
         responseContent.value = 'Error! Could not reach the API : ' + error;
-        console.error(error);
+        errorHappened.value = true;
     }
     loader.value = false;
 };
 
 onUpdated(() => {
-    //console.log('TODO : update content !');
+    //console.log(responseContent.value);
 })
 
 </script>
@@ -52,7 +54,10 @@ onUpdated(() => {
     </div>
 
     <span class="loader" v-if="loader"></span>
-    <div class="responsecontent" v-if="responseContent">
+    <div v-if="errorHappened">
+        <p>Error ! Could not reach the API.</p>
+    </div>
+    <div class="responsecontent" v-if="responseContent && !errorHappened">
         <ul v-for="country in responseContent">
             <li>CountryCode : <b>{{ country.countryCode }}</b></li>
             <li>GeonameId : <b>{{ country.geonameId }}</b></li>
@@ -73,6 +78,7 @@ select {
     line-height: 1.5;
     font-weight: 400;
     max-width: fit-content;
+    appearance: none;
 }
 
 ul {
