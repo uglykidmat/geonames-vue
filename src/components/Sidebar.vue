@@ -5,32 +5,44 @@
             <button class="menu-toggle" @click="ToggleMenu">
                 <span class="material-symbols-outlined material-icons">keyboard_double_arrow_right</span>
             </button>
-
         </div>
         <div class="menu">
-            <router-link class="button" to="/">
+            <RouterLink class="button" to="/">
                 <span class="material-symbols-outlined material-icons">home</span>
                 <span class="text">Home</span>
-            </router-link>
-            <router-link class="button" to="/export">
+            </RouterLink>
+            <RouterLink class="button" to="/export">
                 <span class="material-symbols-outlined material-icons">ios_share</span>
                 <span class="text">Export</span>
-            </router-link>
-            <router-link class="button" to="/translations">
+            </RouterLink>
+            <RouterLink class="button" to="/translations">
                 <span class="material-symbols-outlined material-icons">translate</span>
                 <span class="text">Translations</span>
-            </router-link>
+            </RouterLink>
         </div>
     </aside>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
+
 const is_expanded = ref(localStorage.getItem("is_expanded") === "true");
 const ToggleMenu = () => {
     is_expanded.value = !is_expanded.value
     localStorage.setItem("is_expanded", is_expanded.value)
 }
+const AutoCloseWhenTooSmall = () => {
+    if (window.innerWidth < 900 && is_expanded) {
+        is_expanded.value = false
+        localStorage.setItem("is_expanded", is_expanded.value)
+    }
+
+    else is_expanded.value = true
+    localStorage.setItem("is_expanded", is_expanded.value)
+}
+
+window.onresize = AutoCloseWhenTooSmall;
 </script>
 
 <style lang="scss" scoped>
@@ -45,12 +57,11 @@ aside {
     padding: 1rem;
     transition: 0.2s ease-in-out;
 
-
     h1 {
         display: none;
         max-width: fit-content;
-        transition: 0.2s ease-in-out;
     }
+
 
     .menu-toggle-wrap {
         display: flex;
@@ -68,13 +79,6 @@ aside {
                 font-size: 2rem;
                 color: var(--dark);
                 transition: 0.2s ease-out;
-            }
-
-            &:hover {
-                .material-icons {
-                    color: var(--primary);
-                    transform: translateX(0.5rem);
-                }
             }
         }
     }
@@ -111,8 +115,8 @@ aside {
             }
 
             &.router-link-exact-active {
-                background-color: var(--dark-alt);
-                border-right: 5px solid var(--dark);
+                background-color: var(--dark);
+                border-right: 5px solid var(--dark-alt);
 
                 .material-icons,
                 .text {
@@ -137,7 +141,7 @@ aside {
 
         h1 {
             display: block;
-            transition: 0.2s ease-in-out;
+            transition: 1s ease-in-out 1s;
         }
 
         .menu-toggle-wrap {
@@ -165,9 +169,11 @@ aside {
         }
     }
 
-    @media (max-width: 1024px) {
-        position: absolute;
+    @media screen and (max-width: 900) {
+        //position: absolute;
         z-index: 99;
     }
+
+    @media screen and (min-width: 900) {}
 }
 </style>
