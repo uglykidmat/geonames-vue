@@ -57,13 +57,30 @@ button {
   main {
     padding: 1em;
     margin: 0 auto 0 auto;
-    //align-items: center;
     justify-content: center;
     justify-self: center;
     align-items: center;
 
     @media (min-width: 1100px) {
       transition: 0.2s ease-in-out;
+    }
+
+    button {
+      margin: 1em;
+      padding: 0.5em 1em;
+      border-radius: 0.9em;
+      border: 2px solid var(--dark);
+      background-color: var(--light);
+      font-family: 'Poppins', sans-serif;
+      color: var(--dark);
+      line-height: 1.5;
+      font-weight: 400;
+
+      &:hover {
+        color: var(--light);
+        background-color: var(--dark);
+        transition: 0.2s ease-in-out;
+      }
     }
   }
 }
@@ -95,6 +112,10 @@ a:hover {
 
 p {
   font-family: 'Overpass', sans-serif;
+}
+
+ul {
+  list-style-type: none;
 }
 
 .loader {

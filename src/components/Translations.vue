@@ -1,11 +1,12 @@
 <script setup>
-import { onUpdated, ref } from 'vue';
-
-const apiToken = import.meta.env.VITE_GEONAMES_TOKEN;
-const apiURL = import.meta.env.VITE_GEONAMES_URL;
-
-const loader = ref(false);
-
+import TranslationForm from '../forms/TranslationForm.vue';
 </script>
-<template></template>
-<style scoped></style>
+<template>
+    <TranslationForm />
+</template>
+
+<style scoped>
+/* .methods-list {
+    max-width: 50%
+} */
+</style>

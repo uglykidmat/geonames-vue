@@ -62,7 +62,6 @@ aside {
         max-width: fit-content;
     }
 
-
     .menu-toggle-wrap {
         display: flex;
         justify-content: flex-end;
