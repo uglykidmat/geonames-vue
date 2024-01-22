@@ -16,6 +16,7 @@ import Sidebar from './components/Sidebar.vue';
   --grey: #024959;
   --dark: #012E40;
   --dark-alt: #334155;
+  --grey-bkgnd: #9c9c9c;
   --grey-light-bkgnd: #d9d9d9;
   --grey-dark-bkgnd: #1d1d1f;
   --light: #f1f1f1;
