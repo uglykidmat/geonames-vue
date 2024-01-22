@@ -12,7 +12,8 @@ export async function translationClient() {
                 headers: { 'Authorization': `Basic ${apiToken}` }
             }
         );
-        return responseContent = await response.json();
+        responseContent = await response.json();
+        return responseContent
 
     } catch (error) {
         return error;
@@ -42,5 +43,3 @@ export async function searchTranslationByCountryCode(countrycode) {
         return responseContent = 'Error! Could not reach the API : ' + error;
     }
 }
-
-export default translationClient;
