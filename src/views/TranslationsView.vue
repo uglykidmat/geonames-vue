@@ -1,6 +1,10 @@
 <script setup>
-// import Translations from '../components/Translations.vue';
-// import { searchTranslationByCountryCode } from '../client/translationClientModule';
+import Translation from '../components/Translation.vue';
+import { externalSearchTranslationByCountryCode } from '../client/translationClientModule';
+const externalSearch = externalSearchTranslationByCountryCode;
+import { logMe } from '../client/translationClientModule';
+const logMeClick = logMe;
+
 const apiToken = import.meta.env.VITE_GEONAMES_TOKEN;
 const apiURL = import.meta.env.VITE_GEONAMES_URL;
 
@@ -9,7 +13,8 @@ const searchbycountrycode = ref('');
 const responseContent = ref('');
 const errorHappened = ref(false);
 const loader = ref(false);
-const isEditActive = ref(false);
+let isEditActive = false;
+let cachedTranslation = '';
 
 async function searchTranslationByCountryCode() {
     try {
@@ -31,19 +36,47 @@ async function searchTranslationByCountryCode() {
     loader.value = false;
 };
 
-async function editTranslation() {
-    console.log("Edit !");
-    isEditActive.value = true;
+async function editTranslation(translationIndex, name) {
+    isEditActive = true;
+    console.log("Edit ! ", translationIndex);
+    cachedTranslation = name;
+    console.log(cachedTranslation);
 
 }
-async function cancelTranslation() {
-    console.log("Cancel !");
-    isEditActive.value = false;
+async function cancelTranslation(translationIndex, name) {
+    console.log("Cancel ! ", translationIndex);
 
+    isEditActive = false;
+    return cachedTranslation;
 }
 
 
 
+async function saveEditedTranslation(translationIndex, newName) {
+    try {
+        responseContent.value = null;
+        loader.value = true;
+        const response = await fetch(
+            // apiURL + '/country/list/' + locale.value,
+            'https://127.0.0.1:8000/translation/' + searchbycountrycode.value,
+            {
+                method: "PATCH",
+                headers: { 'Authorization': `Basic ${apiToken}` }
+            }
+        );
+        responseContent.value = await response.json();
+    } catch (error) {
+        responseContent.value = 'Error! Could not reach the API : ' + error;
+        errorHappened.value = true;
+    }
+    loader.value = false;
+};
+
+
+
+async function submitNewTranslation() {
+    // TODO
+}
 </script>
 
 <template>
@@ -54,37 +87,48 @@ async function cancelTranslation() {
             <!-- <label for="countrycodefield" class="form-input-label">Country code</label> -->
             <input v-model="searchbycountrycode" type="text" maxlength="2" class="form-input" name="countrycodefield"
                 id="countrycodefield" @keydown.enter="searchTranslationByCountryCode" placeholder='CN, PL, ...'>
-            <button @click="searchTranslationByCountryCode()" :value="searchbycountrycode">Chercher</button>
+            <button @click="externalSearchTranslationByCountryCode"
+                :valuecountrycode="searchbycountrycode">Chercher</button>
         </div>
         <span class="loader" v-if="loader"></span>
         <div v-if="errorHappened">
             <p>Error ! Could not reach the API.</p>
         </div>
         <div class="responsecontent" v-if="responseContent && !errorHappened">
-            <ul class="responserow">
+            <button @click="logMe">LOGME</button>
+            <ul id="responserowtitle" class="responserow">
                 <li>GeonameId</li>
                 <li>CountryCode</li>
                 <li>Name</li>
-                <li>Fcode</li>
+                <!-- <li>Fcode</li> -->
                 <li>Locale</li>
                 <li></li>
             </ul>
-            <ul class="responserow" v-for="translation in responseContent" :key="translation.geonameId">
-                <li><b>{{ translation.geonameId }}</b></li>
+
+            <Translation :GeonameId="translation.geonameId" :CountryCode="translation.countrycode" :Name="translation.name"
+                :Fcode="translation.fcode" :Locale="translation.locale" :Index="index"
+                v-for="(translation, index) in responseContent" :key="index" />
+
+            <!-- <ul class="responserow" v-for="(translation, index) in responseContent" :key="index">
+
+                <li><b>{{ translation.geonameId }}</b> ({{ index }})</li>
                 <li><b>{{ translation.countrycode }}</b></li>
                 <li>
-
-                    <b>{{ translation.name }}</b>
-                    <!-- <input type="text" class="editblock" placeholder="Edit" v-if="isEditActive" /> -->
+                    <b v-if="!isEditActive">{{ translation.name }}</b>
+                    <input v-if="isEditActive" type="text" class="editblock" placeholder="translation.name"
+                        v-model="translation.name" />
                 </li>
-                <!-- <li><b>{{ translation.fcode }}</b></li> -->
+                <li><b>{{ translation.fcode }}</b></li>
                 <li><b>{{ translation.locale }}</b></li>
 
-                <div>
-                    <button class="editbutton" @click="editTranslation">Edit</button>
-                    <button class="editbutton" v-if="isEditActive" @click="cancelTranslation">Cancel</button>
+                <div class="formbuttons">
+                    <button v-if="!isEditActive" class="editbutton" :id="'editbuttonrow' + index"
+                        @click="editTranslation(index, translation.name)">Edit</button>
+                    <button v-if="isEditActive" class="editbutton"
+                        @click="saveEditedTranslation(index, translation.name)">Save</button>
+                    <button v-if="isEditActive" class="editbutton" @click="cancelTranslation(index)">Cancel</button>
                 </div>
-            </ul>
+            </ul> -->
 
             <!-- <div class="responserowgrid" v-for="translation in responseContent" :key="translation.geonameId">
                 <input type="text" class="geoid" placeholder="Corentin" />
@@ -122,9 +166,18 @@ async function cancelTranslation() {
             // margin: 0;
             display: grid;
             grid-template-rows: 1fr;
-            grid-template-columns: 1fr 1fr 2fr 1fr 0.5fr 0.5fr;
+            grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+            column-gap: 1em;
             text-align: left;
             align-items: center;
+        }
+
+        .formbuttons {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            justify-items: center;
+            gap: 1em;
         }
 
         // .responserowgrid {
