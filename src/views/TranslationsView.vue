@@ -1,14 +1,10 @@
 <script setup>
 import Translation from '../components/Translation.vue';
-import { externalSearchTranslationByCountryCode } from '../client/translationClientModule';
-const externalSearch = externalSearchTranslationByCountryCode;
-import { logMe } from '../client/translationClientModule';
-const logMeClick = logMe;
 
 const apiToken = import.meta.env.VITE_GEONAMES_TOKEN;
 const apiURL = import.meta.env.VITE_GEONAMES_URL;
 
-import { ref, onUpdated } from 'vue';
+import { ref } from 'vue';
 const searchbycountrycode = ref('');
 const responseContent = ref('');
 const errorHappened = ref(false);
@@ -23,6 +19,7 @@ const activeEdit = ref(false);
 async function searchTranslationByCountryCode() {
     try {
         responseContent.value = null;
+        emptyResponse.value = false;
         loader.value = true;
         const response = await fetch(
             // apiURL + '/country/list/' + locale.value,
@@ -32,16 +29,13 @@ async function searchTranslationByCountryCode() {
                 headers: { 'Authorization': `Basic ${apiToken}` }
             }
         );
-        // responseContent.value = await response.json();
         parsedContent = await response.json();
-        parsedContent.map((item) => {
-            console.log(item);
-        })
+
+        if (!parsedContent.length) {
+            parsedContent = 'No translations for this countrycode yet !';
+            emptyResponse.value = true;
+        };
         refParsedContent.value = parsedContent;
-        // parsedContent.foreach((translationData) => {
-        //     console.log("ici :", translationData);
-        // })
-        console.log(refParsedContent.value);
     } catch (error) {
         responseContent.value = 'Error! Could not reach the API : ' + error;
         errorHappened.value = true;
@@ -51,6 +45,7 @@ async function searchTranslationByCountryCode() {
 
 async function saveEditedTranslation(translationIndex, newName) {
     try {
+        errorHappened.value = false;
         responseContent.value = null;
         loader.value = true;
         const response = await fetch(
@@ -65,20 +60,16 @@ async function saveEditedTranslation(translationIndex, newName) {
     } catch (error) {
         responseContent.value = 'Error! Could not reach the API : ' + error;
         errorHappened.value = true;
+        return
     }
     loader.value = false;
 };
-
+//NO TOUCHY\\
 function updateName(name, index) {
-    console.log("Hello maman depuis la fonction émise !", name);
     parsedContent[index].name = name;
     console.log(parsedContent);
 }
-
-// onUpdated(() => {
-//     console.log(responseContent)
-// })
-
+//NO TOUCHY\\
 </script>
 
 <template>
@@ -89,14 +80,14 @@ function updateName(name, index) {
             <label for="countrycodefield" class="form-input-label">Country code</label>
             <input v-model="searchbycountrycode" type="text" maxlength="2" class="form-input" name="countrycodefield"
                 id="countrycodefield" @keydown.enter="searchTranslationByCountryCode" placeholder='CN, PL, ...'>
-            <button @click="externalSearchTranslationByCountryCode"
-                :valuecountrycode="searchbycountrycode">Chercher</button>
+            <button @click="searchTranslationByCountryCode">Chercher</button>
         </div>
         <span class="loader" v-if="loader"></span>
+        <div v-if="emptyResponse && !loader">No translations yet !</div>
         <div v-if="errorHappened">
             <p>Error ! Could not reach the API.</p>
         </div>
-        <div class="responsecontent" v-if="refParsedContent && !errorHappened">
+        <div class="responsecontent" v-if="refParsedContent && !errorHappened && !emptyResponse">
             <!-- <button @click="logMe">LOGME</button> -->
             <ul id="responserowtitle" class="responserow">
                 <li>GeonameId</li>
