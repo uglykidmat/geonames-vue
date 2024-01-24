@@ -7,23 +7,26 @@ const initialState = defineProps({
     OriginalName: String,
     Fcode: String,
     Locale: String,
-    Index: Number
+    Index: Number,
+    Active: Boolean
 })
 
 const isEditActive = ref(false);
 const newTranslation = ref('');
 const refTranslation = ref('');
+const translationDone = ref(false);
 
 const emit = defineEmits(
     ['updatename', 'isEditactive']
 )
 
-// onUpdated(() => {
-//     console.log("Une update maman ?");
-// })
+onUpdated(() => {
+    console.log("Une update maman ?");
+})
 
 onMounted(() => {
     refTranslation.value = initialState.OriginalName
+
     //console.log("refTranslation :", refTranslation.value)
 });
 
@@ -48,6 +51,11 @@ function saveNewTranslation(name, Index) {
     // return newTranslation;
 }
 
+function switchoff() {
+    isEditActive.value = false;
+    translationDone.value = true;
+}
+
 </script>
 <template>
     {{ newTranslation }}
@@ -56,14 +64,17 @@ function saveNewTranslation(name, Index) {
         <!-- <li>{{ Fcode }}</li> -->
         <li>{{ CountryCode }}</li>
         <li>{{ Locale }}</li>
-        <li v-if="!isEditActive">{{ OriginalName }}</li>
+
+        <li v-if="!isEditActive && !translationDone">{{ OriginalName }}</li>
+        <li v-if="translationDone">{{ newTranslation }}</li>
         <input v-if="isEditActive" v-model="newTranslation" type="text" class="editblock" />
 
         <div class="formbuttons">
             <button v-if="!isEditActive" :id="`Button` + Index" class="editbutton"
                 @click="editTranslation(OriginalName)">Edit</button>
             <!-- <button v-if="isEditActive" class="editbutton" @click="saveNewTranslation(newTranslation)">Save</button> -->
-            <button v-if="isEditActive" class="editbutton" @click="$emit('updatename', newTranslation, Index)">Save</button>
+            <button v-if="isEditActive" class="editbutton"
+                @click="$emit('updatename', newTranslation, Index); switchoff()">Save</button>
             <!-- <button v-if="isEditActive" class="editbutton" @click="saveNewTranslation(newTranslation, Index)">Save</button> -->
             <button v-if="isEditActive" class="editbutton" @click="cancelTranslation(OriginalName)">Cancel</button>
         </div>

@@ -16,6 +16,9 @@ const loader = ref(false);
 const newName = ref('');
 let parsedContent = null;
 const emptyResponse = ref(false);
+const refParsedContent = ref('');
+const activeEdit = ref(false);
+
 
 async function searchTranslationByCountryCode() {
     try {
@@ -34,9 +37,11 @@ async function searchTranslationByCountryCode() {
         parsedContent.map((item) => {
             console.log(item);
         })
+        refParsedContent.value = parsedContent;
         // parsedContent.foreach((translationData) => {
         //     console.log("ici :", translationData);
         // })
+        console.log(refParsedContent.value);
     } catch (error) {
         responseContent.value = 'Error! Could not reach the API : ' + error;
         errorHappened.value = true;
@@ -66,10 +71,8 @@ async function saveEditedTranslation(translationIndex, newName) {
 
 function updateName(name, index) {
     console.log("Hello maman depuis la fonction émise !", name);
-    newName.value = name;
-    //console.log(responseContent.value[index].name);
-    // responseContent.value[index].name = name;
-    //console.log(newName);
+    parsedContent[index].name = name;
+    console.log(parsedContent);
 }
 
 // onUpdated(() => {
@@ -93,7 +96,7 @@ function updateName(name, index) {
         <div v-if="errorHappened">
             <p>Error ! Could not reach the API.</p>
         </div>
-        <div class="responsecontent" v-if="responseContent && !errorHappened">
+        <div class="responsecontent" v-if="refParsedContent && !errorHappened">
             <!-- <button @click="logMe">LOGME</button> -->
             <ul id="responserowtitle" class="responserow">
                 <li>GeonameId</li>
@@ -103,10 +106,9 @@ function updateName(name, index) {
                 <li>Locale</li>
                 <li></li>
             </ul>
-
-            <Translation v-for="(translation, index) in responseContent" :key="index" :GeonameId="translation.geonameId"
+            <Translation v-for="(translation, index) in refParsedContent" :key="index" :GeonameId="translation.geonameId"
                 :CountryCode="translation.countrycode" :OriginalName="translation.name" :Fcode="translation.fcode"
-                :Locale="translation.locale" :Index="index" @updatename="updateName" />
+                :Locale="translation.locale" :Index="index" @updatename="updateName" :Active="activeEdit" />
 
         </div>
     </div>
