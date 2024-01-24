@@ -1,57 +1,76 @@
 <script setup>
-import { ref } from 'vue';
-const isEditActive = ref(false);
+import { onMounted, onUpdated, ref } from 'vue';
 
-let cachedTranslation = ref('');
-let newTranslation = '';
-
-defineProps({
+const initialState = defineProps({
     GeonameId: Number,
     CountryCode: String,
-    Name: String,
+    OriginalName: String,
     Fcode: String,
     Locale: String,
     Index: Number
 })
 
-async function editTranslation(name) {
+const isEditActive = ref(false);
+const newTranslation = ref('');
+const refTranslation = ref('');
+
+const emit = defineEmits(
+    ['updatename', 'isEditactive']
+)
+
+// onUpdated(() => {
+//     console.log("Une update maman ?");
+// })
+
+onMounted(() => {
+    refTranslation.value = initialState.OriginalName
+    //console.log("refTranslation :", refTranslation.value)
+});
+
+
+function editTranslation(name) {
     isEditActive.value = true;
-    cachedTranslation = name;
-    console.log('Cached translation : ', cachedTranslation);
-    console.log(newTranslation);
+    newTranslation.value = name;
+    // console.log('Cached translation : ', newTranslation.value);
     //return name = 
 }
-async function cancelTranslation(name) {
-    console.log("Cancelled translation for", name, "!");
+function cancelTranslation() {
+    console.log("Cancelled translation for :", refTranslation.value);
     isEditActive.value = false;
-    return cachedTranslation;
+    return null;
 }
 
-async function saveEditedTranslation(name) {
-    console.log("Le name :", name);
+function saveNewTranslation(name, Index) {
+    console.log("Le nouveau name :", name);
     console.log("Bon Maman c'est la dernière fonction...peut-être !");
+
     isEditActive.value = false;
+    // return newTranslation;
 }
 
 </script>
 <template>
+    {{ newTranslation }}
     <ul class="responserow">
         <li>{{ GeonameId }}</li>
+        <!-- <li>{{ Fcode }}</li> -->
         <li>{{ CountryCode }}</li>
         <li>{{ Locale }}</li>
-        <li v-if="!isEditActive">{{ Name }}</li>
-        <input v-if="isEditActive" type="text" class="editblock" :placeholder="Name" :value="cachedTranslation" />
+        <li v-if="!isEditActive">{{ OriginalName }}</li>
+        <input v-if="isEditActive" v-model="newTranslation" type="text" class="editblock" />
 
         <div class="formbuttons">
             <button v-if="!isEditActive" :id="`Button` + Index" class="editbutton"
-                @click="editTranslation(Name)">Edit</button>
-            <button v-if="isEditActive" class="editbutton" @click="saveEditedTranslation(Name)">Save</button>
-            <button v-if="isEditActive" class="editbutton" @click="cancelTranslation(Name)">Cancel</button>
+                @click="editTranslation(OriginalName)">Edit</button>
+            <!-- <button v-if="isEditActive" class="editbutton" @click="saveNewTranslation(newTranslation)">Save</button> -->
+            <button v-if="isEditActive" class="editbutton" @click="$emit('updatename', newTranslation, Index)">Save</button>
+            <!-- <button v-if="isEditActive" class="editbutton" @click="saveNewTranslation(newTranslation, Index)">Save</button> -->
+            <button v-if="isEditActive" class="editbutton" @click="cancelTranslation(OriginalName)">Cancel</button>
         </div>
     </ul>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .responserow {
     /* margin: 0; */
     display: grid;
@@ -60,6 +79,15 @@ async function saveEditedTranslation(name) {
     column-gap: 1em;
     text-align: left;
     align-items: center;
+
+    input {
+        line-height: 1.5;
+        font-weight: 400;
+        font-family: 'Poppins', sans-serif;
+        background-color: inherit;
+        border: none;
+        border-bottom: 1px solid var(--dark);
+    }
 }
 
 .formbuttons {
