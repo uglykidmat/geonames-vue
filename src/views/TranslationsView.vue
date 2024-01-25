@@ -6,21 +6,26 @@ const apiURL = import.meta.env.VITE_GEONAMES_URL;
 
 import { ref } from 'vue';
 const searchbycountrycode = ref('');
-const responseContent = ref('');
+
 const errorHappened = ref(false);
 const loader = ref(false);
-const newName = ref('');
 let parsedContent = null;
 const emptyResponse = ref(false);
 const refParsedContent = ref('');
 const activeEdit = ref(false);
+const translationIsDone = ref(false);
+const patchResponse = ref('');
+const patchOk = ref('false');
 
 
 async function searchTranslationByCountryCode() {
     try {
-        responseContent.value = null;
+        refParsedContent.value = null;
         emptyResponse.value = false;
+        translationIsDone.value = false;
+        errorHappened.value = false;
         loader.value = true;
+        patchOk.value = false;
         const response = await fetch(
             // apiURL + '/country/list/' + locale.value,
             'https://127.0.0.1:8000/translation/search/countrycode/' + searchbycountrycode.value,
@@ -37,37 +42,54 @@ async function searchTranslationByCountryCode() {
         };
         refParsedContent.value = parsedContent;
     } catch (error) {
-        responseContent.value = 'Error! Could not reach the API : ' + error;
+        refParsedContent.value = 'Error! Could not reach the API : ' + error;
         errorHappened.value = true;
     }
     loader.value = false;
 };
 
-async function saveEditedTranslation(translationIndex, newName) {
+async function saveEditedTranslations(patchContent) {
     try {
         errorHappened.value = false;
-        responseContent.value = null;
         loader.value = true;
         const response = await fetch(
             // apiURL + '/country/list/' + locale.value,
-            'https://127.0.0.1:8000/translation/' + searchbycountrycode.value,
+            'https://127.0.0.1:8000/translation',
             {
                 method: "PATCH",
-                headers: { 'Authorization': `Basic ${apiToken}` }
+                headers: {
+                    'Authorization': `Basic ${apiToken}`,
+                    'Content-Type': 'application/json',
+                },
+                body: patchContent
             }
         );
-        responseContent.value = await response.json();
+        patchResponse.value = await response.json();
+        patchOk.value = true;
+        translationIsDone.value = false;
     } catch (error) {
-        responseContent.value = 'Error! Could not reach the API : ' + error;
+        patchResponse.value = error;
         errorHappened.value = true;
-        return
+        loader.value = false;
     }
     loader.value = false;
 };
+
+function translationDone() {
+    translationIsDone.value = true;
+}
 //NO TOUCHY\\
 function updateName(name, index) {
     parsedContent[index].name = name;
-    console.log(parsedContent);
+
+}
+
+async function parsetoarray(parsedContent) {
+    let patchContent = JSON.stringify(parsedContent);
+    console.log("patchContent : ", patchContent);
+    console.log("patchContent type : ", typeof patchContent);
+    await saveEditedTranslations(patchContent);
+
 }
 //NO TOUCHY\\
 </script>
@@ -87,6 +109,9 @@ function updateName(name, index) {
         <div v-if="errorHappened">
             <p>Error ! Could not reach the API.</p>
         </div>
+
+        <div v-if="errorHappened" class="patchresponse">{{ patchResponse }}</div>
+        <div v-if="patchOk" class="patchresponse">{{ patchResponse }}</div>
         <div class="responsecontent" v-if="refParsedContent && !errorHappened && !emptyResponse">
             <!-- <button @click="logMe">LOGME</button> -->
             <ul id="responserowtitle" class="responserow">
@@ -95,12 +120,18 @@ function updateName(name, index) {
                 <li>Name</li>
                 <!-- <li>Fcode</li> -->
                 <li>Locale</li>
-                <li></li>
+                <div v-if="translationIsDone" class="validatebuttons">
+                    <li><button class="save" @click="parsetoarray(parsedContent)">Save</button>
+                    </li>
+                    <li><button class="save" @click="searchTranslationByCountryCode">Cancel</button>
+                    </li>
+                </div>
+
             </ul>
             <Translation v-for="(translation, index) in refParsedContent" :key="index" :GeonameId="translation.geonameId"
                 :CountryCode="translation.countrycode" :OriginalName="translation.name" :Fcode="translation.fcode"
-                :Locale="translation.locale" :Index="index" @updatename="updateName" :Active="activeEdit" />
-
+                :Locale="translation.locale" :Index="index" @updatename="updateName" @translationDone="translationDone"
+                :Active="activeEdit" />
         </div>
     </div>
 </template>
@@ -116,6 +147,12 @@ function updateName(name, index) {
     .responsecontent {
         /* width: 90%; */
         font-size: 0.8em;
+
+        .responserow .validatebuttons {
+            display: flex;
+            flex-flow: row nowrap;
+
+        }
 
         .editbutton {
             margin: 0;

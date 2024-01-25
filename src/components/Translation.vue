@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUpdated, ref } from 'vue';
+import { ref } from 'vue';
 
 const initialState = defineProps({
     GeonameId: Number,
@@ -16,7 +16,7 @@ const translationDone = ref(false);
 const newTranslation = ref('');
 
 const emit = defineEmits(
-    ['updatename', 'isEditactive']
+    ['updatename', 'isEditactive', 'translationDone']
 )
 
 function editTranslation(name) {
@@ -46,11 +46,12 @@ function switchoff() {
 
         <li v-if="!isEditActive && !translationDone">{{ OriginalName }}</li>
         <li v-if="translationDone">{{ newTranslation }}</li>
-        <input v-if="isEditActive" v-model="newTranslation" type="text" class="editblock" />
+        <input v-if="isEditActive" v-model="newTranslation"
+            @submit="$emit('updatename', newTranslation, Index); switchoff()" type="text" class="editblock" />
 
         <div class="formbuttons">
             <button v-if="!isEditActive" :id="`Button` + Index" class="editbutton"
-                @click="editTranslation(OriginalName)">Edit</button>
+                @click="$emit('translationDone'); editTranslation(OriginalName)">Edit</button>
             <button v-if="isEditActive" class="editbutton"
                 @click="$emit('updatename', newTranslation, Index); switchoff()">Save</button>
             <button v-if="isEditActive" class="editbutton" @click="cancelTranslation(OriginalName)">Cancel</button>
