@@ -114,22 +114,20 @@ async function parsetoarray(parsedContent) {
         <div v-if="patchOk" class="patchresponse">{{ patchResponse }}</div>
         <div class="responsecontent" v-if="refParsedContent && !errorHappened && !emptyResponse">
             <!-- <button @click="logMe">LOGME</button> -->
-            <ul id="responserowtitle" class="responserow">
-                <li>GeonameId</li>
-                <li>CountryCode</li>
-                <li>Name</li>
+            <div id="responserowtitle" class="responserow">
+                <div>GeonameId</div>
+                <div>CountryCode</div>
+                <div>Name</div>
                 <!-- <li>Fcode</li> -->
-                <li>Locale</li>
+                <div>Locale</div>
                 <div v-if="translationIsDone" class="validatebuttons">
-                    <li><button class="save" @click="parsetoarray(parsedContent)">Save</button>
-                    </li>
-                    <li><button class="save" @click="searchTranslationByCountryCode">Cancel</button>
-                    </li>
+                    <button class="save" @click="parsetoarray(parsedContent)">Save</button>
+                    <button class="save" @click="searchTranslationByCountryCode">Cancel</button>
                 </div>
 
-            </ul>
+            </div>
             <Translation v-for="(translation, index) in refParsedContent" :key="index" :GeonameId="translation.geonameId"
-                :CountryCode="translation.countrycode" :OriginalName="translation.name" :Fcode="translation.fcode"
+                :CountryCode="translation.countryCode" :OriginalName="translation.name" :Fcode="translation.fcode"
                 :Locale="translation.locale" :Index="index" @updatename="updateName" @translationDone="translationDone"
                 :Active="activeEdit" />
         </div>
@@ -138,20 +136,19 @@ async function parsetoarray(parsedContent) {
 
 <style scoped lang="scss">
 .translations {
-    max-width: 66vw;
-    width: auto;
+    // max-width: 66vw;
+    // width: auto;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
 
     .responsecontent {
-        /* width: 90%; */
+        width: 100%;
         font-size: 0.8em;
 
         .responserow .validatebuttons {
             display: flex;
             flex-flow: row nowrap;
-
         }
 
         .editbutton {

@@ -50,12 +50,12 @@ button {
 
 .app {
   display: flex;
-  flex: 1 1 0;
   min-width: 320px;
   min-height: 100vh;
   text-align: center;
 
   main {
+    flex: 1;
     padding: 1em;
     margin: 0 auto 0 auto;
     justify-content: center;

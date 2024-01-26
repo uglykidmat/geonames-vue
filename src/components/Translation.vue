@@ -47,7 +47,7 @@ function switchoff() {
         <li v-if="!isEditActive && !translationDone">{{ OriginalName }}</li>
         <li v-if="translationDone">{{ newTranslation }}</li>
         <input v-if="isEditActive" v-model="newTranslation"
-            @submit="$emit('updatename', newTranslation, Index); switchoff()" type="text" class="editblock" />
+            @keydown.enter="$emit('updatename', newTranslation, Index); switchoff()" type="text" class="editblock" />
 
         <div class="formbuttons">
             <button v-if="!isEditActive" :id="`Button` + Index" class="editbutton"
