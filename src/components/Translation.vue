@@ -63,7 +63,7 @@ function deleteTranslation(index) {
 
             <button v-if="isEditActive" class="editbutton"
                 @click="$emit('updatename', newTranslation, Index); switchoff()">Save</button>
-            <button v-if="isEditActive" class="editbutton" @click="cancelTranslation(OriginalName)">Cancel</button>
+            <button v-if="isEditActive" class="cancelbutton" @click="cancelTranslation(OriginalName)">Cancel</button>
         </div>
     </ul>
 </template>
@@ -84,5 +84,14 @@ input {
     align-items: center;
     justify-items: center;
     gap: 0.5em;
+
+    .deletebutton {
+        border-color: var(--warning);
+
+        &:hover {
+            background-color: var(--warning);
+            color: (--light);
+        }
+    }
 }
 </style>

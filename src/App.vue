@@ -5,7 +5,12 @@ import Sidebar from './components/Sidebar.vue';
 <template>
   <Sidebar />
   <main>
-    <RouterView />
+    <!-- <RouterView /> -->
+    <router-view v-slot="{ Component }">
+      <Transition name="fade" mode="out-in">
+        <component :is="Component" />
+      </Transition>
+    </router-view>
   </main>
 </template>
 
@@ -62,6 +67,18 @@ button {
     justify-content: center;
     justify-self: center;
     align-items: center;
+
+    will-change: transform, opacity;
+
+    .fade-enter-from,
+    .fade-leave-to {
+      opacity: 0;
+    }
+
+    .fade-enter-active,
+    .fade-leave-active {
+      transition: opacity 0.2s ease-out;
+    }
 
     @media (min-width: 1100px) {
       transition: 0.2s ease-in-out;

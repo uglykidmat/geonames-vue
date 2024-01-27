@@ -281,6 +281,7 @@ async function translationDelete(index) {
 
         #responserowtitle {
             padding: 1em;
+            min-height: 90px;
         }
 
         .responserow .validatebuttons {
@@ -289,10 +290,20 @@ async function translationDelete(index) {
 
             .savebutton {
                 border-color: var(--primary-alt);
+
+                &:hover {
+                    background-color: var(--primary);
+                    color: (--light);
+                }
             }
 
             .cancelbutton {
                 border-color: var(--warning);
+
+                &:hover {
+                    background-color: var(--warning);
+                    color: (--light);
+                }
             }
         }
 
