@@ -93,12 +93,12 @@ button {
 
 h2 {
   color: var(--dark);
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 
 h3 {
   color: var(--grey);
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 a {
@@ -113,6 +113,7 @@ a:hover {
 
 p {
   font-family: 'Overpass', sans-serif;
+  font-size: 1.5em;
 }
 
 ul {

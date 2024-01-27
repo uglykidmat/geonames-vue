@@ -40,15 +40,13 @@ function switchoff() {
 <template>
     <ul class="responserow">
         <li>{{ GeonameId }}</li>
-        <!-- <li>{{ Fcode }}</li> -->
+        <li>{{ Fcode }}</li>
         <li>{{ CountryCode }}</li>
-        <li>{{ Locale }}</li>
-
         <li v-if="!isEditActive && !translationDone">{{ OriginalName }}</li>
         <li v-if="translationDone">{{ newTranslation }}</li>
         <input v-if="isEditActive" v-model="newTranslation"
             @keydown.enter="$emit('updatename', newTranslation, Index); switchoff()" type="text" class="editblock" />
-
+        <li>{{ Locale }}</li>
         <div class="formbuttons">
             <button v-if="!isEditActive" :id="`Button` + Index" class="editbutton"
                 @click="$emit('translationDone'); editTranslation(OriginalName)">Edit</button>
@@ -60,23 +58,13 @@ function switchoff() {
 </template>
 
 <style scoped lang="scss">
-.responserow {
-    /* margin: 0; */
-    display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
-    column-gap: 1em;
-    text-align: left;
-    align-items: center;
-
-    input {
-        line-height: 1.5;
-        font-weight: 400;
-        font-family: 'Poppins', sans-serif;
-        background-color: inherit;
-        border: none;
-        border-bottom: 1px solid var(--dark);
-    }
+input {
+    line-height: 1.5;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+    background-color: inherit;
+    border: none;
+    border-bottom: 1px solid var(--dark);
 }
 
 .formbuttons {
@@ -84,6 +72,6 @@ function switchoff() {
     flex-flow: row nowrap;
     align-items: center;
     justify-items: center;
-    gap: 1em;
+    gap: 0.5em;
 }
 </style>
