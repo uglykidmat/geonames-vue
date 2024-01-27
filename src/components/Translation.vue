@@ -16,7 +16,7 @@ const translationDone = ref(false);
 const newTranslation = ref('');
 
 const emit = defineEmits(
-    ['updatename', 'isEditactive', 'translationDone']
+    ['updatename', 'isEditactive', 'translationDone', 'translationDelete']
 )
 
 function editTranslation(name) {
@@ -36,6 +36,13 @@ function switchoff() {
     return null;
 }
 
+//__À VIRER ?
+function deleteTranslation(index) {
+    // console.log(index);
+    return null;
+}
+//__________
+
 </script>
 <template>
     <ul class="responserow">
@@ -50,6 +57,10 @@ function switchoff() {
         <div class="formbuttons">
             <button v-if="!isEditActive" :id="`Button` + Index" class="editbutton"
                 @click="$emit('translationDone'); editTranslation(OriginalName)">Edit</button>
+
+            <button v-if="!isEditActive" :id="`deletebutton` + Index" class="deletebutton"
+                @click="$emit('translationDelete', Index); deleteTranslation(Index)">Delete</button>
+
             <button v-if="isEditActive" class="editbutton"
                 @click="$emit('updatename', newTranslation, Index); switchoff()">Save</button>
             <button v-if="isEditActive" class="editbutton" @click="cancelTranslation(OriginalName)">Cancel</button>

@@ -20,6 +20,7 @@ import Sidebar from './components/Sidebar.vue';
   --grey-light-bkgnd: #d9d9d9;
   --grey-dark-bkgnd: #1d1d1f;
   --light: #f1f1f1;
+  --warning: #c23a03;
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   font-weight: 400;

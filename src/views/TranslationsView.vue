@@ -14,9 +14,13 @@ const emptyResponse = ref(false);
 const refParsedContent = ref('');
 const activeEdit = ref(false);
 const translationIsDone = ref(false);
-const patchResponse = ref('');
 const patchOk = ref('false');
+const patchResponse = ref('');
+
 let parsedPatchResponse = null;
+
+const deleteOk = ref('false');
+const deleteResponse = ref('');
 
 async function searchTranslationByCountryCode() {
     try {
@@ -26,6 +30,7 @@ async function searchTranslationByCountryCode() {
         errorHappened.value = false;
         loader.value = true;
         patchOk.value = false;
+        deleteOk.value = false;
         const response = await fetch(
             // apiURL + '/country/list/' + locale.value,
             'https://127.0.0.1:8000/translation/search/countrycode/' + searchbycountrycode.value,
@@ -67,8 +72,6 @@ async function saveEditedTranslations(patchContent) {
         patchResponse.value = await response.json();
         // __________________________________________
         parsedPatchResponse = JSON.parse(JSON.stringify(patchResponse.value));
-        // for (let item of parsedPatchResponse) { console.log(item); }
-        // __________________________________________
         patchOk.value = true;
         translationIsDone.value = false;
     } catch (error) {
@@ -129,12 +132,55 @@ async function postNewTranslation(geonameId, Fcode, countryCode, Name, Locale) {
         patchResponse.value = await response.json();
         // __________________________________________
         translationIsDone.value = false;
+        console.log(newTranslation.countryCode);
+        searchTranslationByCountryCode(newTranslation.countryCode);
     } catch (error) {
         patchResponse.value = error;
         errorHappened.value = true;
         loader.value = false;
     }
     loader.value = false;
+}
+
+async function translationDelete(index) {
+    console.log("DELETE!", index);
+    console.log(refParsedContent.value[index]);
+
+    let deleteTranslationObject = new Object();
+    deleteTranslationObject.geonameId = refParsedContent.value[index].geonameId;
+    deleteTranslationObject.fcode = refParsedContent.value[index].fcode.toUpperCase();
+    deleteTranslationObject.countryCode = refParsedContent.value[index].countryCode.toUpperCase();
+    deleteTranslationObject.name = refParsedContent.value[index].name;
+    deleteTranslationObject.locale = refParsedContent.value[index].locale.toLowerCase();
+
+    let jsonDeleteContent = "[" + JSON.stringify(deleteTranslationObject) + "]";
+
+    // __________________________________________
+    try {
+        errorHappened.value = false;
+        loader.value = true;
+        const response = await fetch(
+            // apiURL + '/country/list/' + locale.value,
+            'https://127.0.0.1:8000/translation',
+            {
+                method: "DELETE",
+                headers: {
+                    'Authorization': `Basic ${apiToken}`,
+                    'Content-Type': 'application/json',
+                },
+                body: jsonDeleteContent
+            }
+        );
+        deleteResponse.value = await response.json();
+        // __________________________________________
+        translationIsDone.value = false;
+    } catch (error) {
+        deleteResponse.value = error;
+        errorHappened.value = true;
+        loader.value = false;
+    }
+    loader.value = false;
+    searchTranslationByCountryCode(deleteTranslationObject.countryCode);
 }
 </script>
 
@@ -197,8 +243,8 @@ async function postNewTranslation(geonameId, Fcode, countryCode, Name, Locale) {
 
         <div v-if="errorHappened" class="patchresponse">{{ patchResponse }}</div>
         <div v-if="patchOk" id="patchsuccess" class="patchresponse patchsuccess">{{ patchResponse }}</div>
+        <div v-if="deleteOk" id="patchsuccess" class="patchresponse patchsuccess">{{ deleteResponse }}</div>
         <div class="responsecontent" v-if="refParsedContent && !errorHappened && !emptyResponse">
-            <!-- <button @click="logMe">LOGME</button> -->
             <div id="responserowtitle" class="responserow">
                 <div>GeonameId</div>
                 <div>Fcode</div>
@@ -206,14 +252,14 @@ async function postNewTranslation(geonameId, Fcode, countryCode, Name, Locale) {
                 <div>Name</div>
                 <div>Locale</div>
                 <div v-if="translationIsDone" class="validatebuttons">
-                    <button class="save" @click="parsetoarray(parsedContent)">Save</button>
-                    <button class="save" @click="searchTranslationByCountryCode">Cancel</button>
+                    <button class="savebutton" @click="parsetoarray(parsedContent)">Save</button>
+                    <button class="cancelbutton" @click="searchTranslationByCountryCode">Cancel</button>
                 </div>
             </div>
             <Translation v-for="(translation, index) in refParsedContent" :key="index" :GeonameId="translation.geonameId"
                 :CountryCode="translation.countryCode" :OriginalName="translation.name" :Fcode="translation.fcode"
                 :Locale="translation.locale" :Index="index" @updatename="updateName" @translationDone="translationDone"
-                :Active="activeEdit" />
+                @translationDelete="translationDelete" :Active="activeEdit" />
         </div>
     </div>
 </template>
@@ -240,6 +286,14 @@ async function postNewTranslation(geonameId, Fcode, countryCode, Name, Locale) {
         .responserow .validatebuttons {
             display: flex;
             flex-flow: row nowrap;
+
+            .savebutton {
+                border-color: var(--primary-alt);
+            }
+
+            .cancelbutton {
+                border-color: var(--warning);
+            }
         }
 
         .editbutton {
