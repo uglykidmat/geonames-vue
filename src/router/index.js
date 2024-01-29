@@ -1,22 +1,25 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import Export from '../views/Export.vue'
-import Translations from '../views/Translations.vue'
+import HomeView from '../views/HomeView.vue'
+import ExportView from '../views/ExportView.vue'
+import TranslationsView from '../views/TranslationsView.vue'
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
+            name: 'homepage',
             path: '/',
-            component: Home
+            component: HomeView
         },
         {
+            name: 'export',
             path: '/export',
-            component: Export
+            component: ExportView
         },
         {
+            name: 'translations',
             path: '/translations',
-            component: Translations
+            component: TranslationsView
         }
     ]
 });
