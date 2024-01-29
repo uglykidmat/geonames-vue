@@ -204,13 +204,13 @@ async function translationDelete(index) {
                 </div>
                 <div>
                     <label for="postfcode" class="form-input-label">Fcode</label>
-                    <input type="text" class="form-input" name="postfcode" id="postfcode" placeholder='ADM1, COUNTRY,...'
-                        v-model="newTranslationForm.Fcode">
+                    <input type="text" class="form-input capitalized" name="postfcode" id="postfcode"
+                        placeholder='ADM1, COUNTRY,...' v-model="newTranslationForm.Fcode">
                 </div>
                 <div>
                     <label for="postcountrycode" class="form-input-label">Country code</label>
-                    <input type="text" maxlength="2" class="form-input" name="postcountrycode" id="postcountrycode"
-                        placeholder='CN, PL, ...' v-model="newTranslationForm.countryCode">
+                    <input type="text" maxlength="2" class="form-input capitalized" name="postcountrycode"
+                        id="postcountrycode" placeholder='CN, PL, ...' v-model="newTranslationForm.countryCode">
                 </div>
                 <div>
                     <label for="postname" class="form-input-label">Name</label>
@@ -231,8 +231,9 @@ async function translationDelete(index) {
 
         <div class="translation-form">
             <label for="countrycodefield" class="form-input-label  form-search-label">Search by Country code </label>
-            <input v-model="searchbycountrycode" type="text" maxlength="2" class="form-input" name="countrycodefield"
-                id="countrycodefield" @keydown.enter="searchTranslationByCountryCode" placeholder='CN, PL, ...'>
+            <input v-model="searchbycountrycode" type="text" maxlength="2" class="form-input capitalized"
+                name="countrycodefield" id="countrycodefield" @keydown.enter="searchTranslationByCountryCode"
+                placeholder='CN, PL, ...'>
             <button @click="searchTranslationByCountryCode">Chercher</button>
         </div>
         <span class="loader" v-if="loader"></span>
@@ -252,7 +253,7 @@ async function translationDelete(index) {
                 <div>Name</div>
                 <div>Locale</div>
                 <div v-if="translationIsDone" class="validatebuttons">
-                    <button class="savebutton" @click="parsetoarray(parsedContent)">Save</button>
+                    <button class="savebutton" @click="parsetoarray(parsedContent)">Save all</button>
                     <button class="cancelbutton" @click="searchTranslationByCountryCode">Cancel</button>
                 </div>
             </div>
@@ -269,6 +270,10 @@ async function translationDelete(index) {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+
+    .capitalized {
+        text-transform: uppercase;
+    }
 
     .patchresponse {
         margin: 1em;
@@ -290,6 +295,7 @@ async function translationDelete(index) {
 
             .savebutton {
                 border-color: var(--primary-alt);
+                line-height: 1.2em;
 
                 &:hover {
                     background-color: var(--primary);
