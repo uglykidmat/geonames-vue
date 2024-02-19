@@ -1,15 +1,13 @@
 <script setup>
-import Translation from '../components/Translation.vue';
-
 const apiToken = import.meta.env.VITE_GEONAMES_TOKEN;
 const apiURL = import.meta.env.VITE_GEONAMES_URL;
 
+import Translation from '../components/Translation.vue';
 import { ref } from 'vue';
-const searchbycountrycode = ref('');
 
+const searchbycountrycode = ref('');
 const errorHappened = ref(false);
 const loader = ref(false);
-let parsedContent = null;
 const emptyResponse = ref(false);
 const refParsedContent = ref('');
 const activeEdit = ref(false);
@@ -17,6 +15,7 @@ const translationIsDone = ref(false);
 const patchOk = ref('false');
 const patchResponse = ref('');
 
+let parsedContent = null;
 let parsedPatchResponse = null;
 
 const deleteOk = ref('false');
@@ -32,8 +31,7 @@ async function searchTranslationByCountryCode() {
         patchOk.value = false;
         deleteOk.value = false;
         const response = await fetch(
-            // apiURL + '/country/list/' + locale.value,
-            'https://127.0.0.1:8000/translation/search/countrycode/' + searchbycountrycode.value,
+            apiURL + '/translation/search/countrycode/' + searchbycountrycode.value,
             {
                 method: "GET",
                 headers: { 'Authorization': `Basic ${apiToken}` }
@@ -58,8 +56,7 @@ async function saveEditedTranslations(patchContent) {
         errorHappened.value = false;
         loader.value = true;
         const response = await fetch(
-            // apiURL + '/country/list/' + locale.value,
-            'https://127.0.0.1:8000/translation',
+            apiURL + '/translation',
             {
                 method: "PATCH",
                 headers: {
@@ -118,8 +115,7 @@ async function postNewTranslation(geonameId, Fcode, countryCode, Name, Locale) {
         errorHappened.value = false;
         loader.value = true;
         const response = await fetch(
-            // apiURL + '/country/list/' + locale.value,
-            'https://127.0.0.1:8000/translation',
+            apiURL + '/translation',
             {
                 method: "POST",
                 headers: {
@@ -132,8 +128,8 @@ async function postNewTranslation(geonameId, Fcode, countryCode, Name, Locale) {
         patchResponse.value = await response.json();
         // __________________________________________
         translationIsDone.value = false;
-        console.log(newTranslation.countryCode);
-        searchTranslationByCountryCode(newTranslation.countryCode);
+        console.log("New translation :", newTranslation.countryCode);
+        //searchTranslationByCountryCode(newTranslation.countryCode);
     } catch (error) {
         patchResponse.value = error;
         errorHappened.value = true;
@@ -154,14 +150,12 @@ async function translationDelete(index) {
     deleteTranslationObject.locale = refParsedContent.value[index].locale.toLowerCase();
 
     let jsonDeleteContent = "[" + JSON.stringify(deleteTranslationObject) + "]";
-
     // __________________________________________
     try {
         errorHappened.value = false;
         loader.value = true;
         const response = await fetch(
-            // apiURL + '/country/list/' + locale.value,
-            'https://127.0.0.1:8000/translation',
+            apiURL + '/translation',
             {
                 method: "DELETE",
                 headers: {
@@ -234,7 +228,7 @@ async function translationDelete(index) {
             <input v-model="searchbycountrycode" type="text" maxlength="2" class="form-input capitalized"
                 name="countrycodefield" id="countrycodefield" @keydown.enter="searchTranslationByCountryCode"
                 placeholder='CN, PL, ...'>
-            <button @click="searchTranslationByCountryCode">Chercher</button>
+            <button @click="searchTranslationByCountryCode">Search</button>
         </div>
         <span class="loader" v-if="loader"></span>
         <div v-if="emptyResponse && !loader">No translations yet !</div>
