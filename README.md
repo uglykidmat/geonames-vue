@@ -2,7 +2,6 @@
 
 "Reverse/Geocoding Webservices": this repository contains the Geonames front-end part, built on a VueJS 3.3 + Vite 5.0 base.
 
-DELETE methods missing as of 27/01/2024 but we've come a long way.
 Keep in mind this app was made by a stagios who does not know anything about Vue.js and frontend in general.
 
 ## Schema
@@ -30,10 +29,10 @@ There are basically 3 pages :
 - translations edition 
 
 The country list will render a list of the known countrycodes in the database
-It will try to reach for the Symfony Geonames API (see https://github.com/Gatoreviews/geonames) and log the JSON response of a call.
+It will try to reach for the Symfony Geonames API (see https://github.com/uglykidmat/geonames) and log the JSON response of a call.
 
 The translations part's goal is to create, modify and delete translations via a form/list.
 - POST a new translation through the form : required data are geonameId, new translation, country code, locale (language the translation is in).
 - PATCH (modifiy) existing translations
-- GET search translations by countrycode (27/01/2024 - TODO by locale)
-- DELETE existing translations (27/01/2024 - TODO)
+- GET search translations by countrycode
+- DELETE existing translations
