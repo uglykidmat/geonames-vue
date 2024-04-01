@@ -81,4 +81,51 @@ import router from '../router';
         text-align: justify;
     }
 }
+
+@media only screen and (min-width: 20em) {
+    .home-page {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: stretch;
+        justify-content: space-around;
+        align-content: center;
+        max-width: 66vw;
+
+        div {
+            padding: 0.5em;
+        }
+
+        .title {
+            grid-area: unset;
+            justify-self: start;
+            align-self: center;
+        }
+
+        .homepush-left {
+            grid-area: unset;
+            background-color: var(--grey-light-bkgnd);
+        }
+
+        .homepush-right {
+            grid-area: unset;
+            background-color: var(--grey-dark-bkgnd);
+            color: #a6a6a6;
+            overflow: hidden;
+            position: relative;
+
+            h3 {
+                color: var(--light);
+            }
+
+            svg {
+                fill: var(--light);
+                fill-opacity: 0.17;
+                position: absolute;
+                bottom: -3em;
+                right: -4em;
+
+            }
+        }
+    }
+}
 </style>

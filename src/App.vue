@@ -159,4 +159,19 @@ ul {
     transform: rotate(360deg);
   }
 }
+
+@media only screen and (min-width: 20em) {
+  h2 {
+    font-size: 2rem;
+  }
+
+  h3 {
+    font-size: 1rem;
+  }
+
+  p {
+    font-family: 'Overpass', sans-serif;
+    font-size: 0.8rem;
+  }
+}
 </style>
