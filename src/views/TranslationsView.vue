@@ -2,6 +2,7 @@
 const apiToken = import.meta.env.VITE_GEONAMES_TOKEN;
 const apiURL = import.meta.env.VITE_GEONAMES_URL;
 
+//import { translationClient } from './client/translationClientModule';
 import Translation from '../components/Translation.vue';
 import { ref } from 'vue';
 
@@ -128,8 +129,7 @@ async function postNewTranslation(geonameId, Fcode, countryCode, Name, Locale) {
         patchResponse.value = await response.json();
         // __________________________________________
         translationIsDone.value = false;
-        console.log("New translation :", newTranslation.countryCode);
-        //searchTranslationByCountryCode(newTranslation.countryCode);
+        searchTranslationByCountryCode(newTranslation.countryCode);
     } catch (error) {
         patchResponse.value = error;
         errorHappened.value = true;
@@ -139,9 +139,6 @@ async function postNewTranslation(geonameId, Fcode, countryCode, Name, Locale) {
 }
 
 async function translationDelete(index) {
-    console.log("DELETE!", index);
-    console.log(refParsedContent.value[index]);
-
     let deleteTranslationObject = new Object();
     deleteTranslationObject.geonameId = refParsedContent.value[index].geonameId;
     deleteTranslationObject.fcode = refParsedContent.value[index].fcode.toUpperCase();
