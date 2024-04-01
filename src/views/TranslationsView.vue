@@ -190,8 +190,8 @@ async function translationDelete(index) {
             )" class="translation-form-new">
                 <div>
                     <label for="postgeonameid" class="form-input-label">GeonameId</label>
-                    <input type="text" class="form-input" name="postgeonameid" id="postgeonameid" placeholder="123456789"
-                        v-model="newTranslationForm.geonameId">
+                    <input type="text" class="form-input" name="postgeonameid" id="postgeonameid"
+                        placeholder="123456789" v-model="newTranslationForm.geonameId">
                 </div>
                 <div>
                     <label for="postfcode" class="form-input-label">Fcode</label>
@@ -248,10 +248,11 @@ async function translationDelete(index) {
                     <button class="cancelbutton" @click="searchTranslationByCountryCode">Cancel</button>
                 </div>
             </div>
-            <Translation v-for="(translation, index) in refParsedContent" :key="index" :GeonameId="translation.geonameId"
-                :CountryCode="translation.countryCode" :OriginalName="translation.name" :Fcode="translation.fcode"
-                :Locale="translation.locale" :Index="index" @updatename="updateName" @translationDone="translationDone"
-                @translationDelete="translationDelete" :Active="activeEdit" />
+            <Translation v-for="(translation, index) in refParsedContent" :key="index"
+                :GeonameId="translation.geonameId" :CountryCode="translation.countryCode"
+                :OriginalName="translation.name" :Fcode="translation.fcode" :Locale="translation.locale" :Index="index"
+                @updatename="updateName" @translationDone="translationDone" @translationDelete="translationDelete"
+                :Active="activeEdit" />
         </div>
     </div>
 </template>

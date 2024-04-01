@@ -1,29 +1,29 @@
 export const apiToken = import.meta.env.VITE_GEONAMES_TOKEN;
 // const apiURL = import.meta.env.VITE_GEONAMES_URL;
 
-export async function translationClient() {
+export async function translationClient(countryCode) {
+    console.log('Hey !');
+    console.log(countryCode);
     try {
-
+        console.log('Hey in trycatch !')
         let response = await fetch(
             // apiURL + '/translation',
-            'https://127.0.0.1:8000/translation',
+            'https://127.0.0.1:8000/translation/search/countrycode/',
+            + countryCode,
             {
                 method: "GET",
                 headers: { 'Authorization': `Basic ${apiToken}` }
             }
         );
         responseContent = await response.json();
+        console.log(responseContent);
+        console.log('After !');
         return responseContent
 
     } catch (error) {
         return error;
     }
 };
-
-export async function logMe() {
-    console.log("Hello mama from external module !");
-    return 'Hello mama form return external module'
-}
 
 export async function externalSearchTranslationByCountryCode(countrycode) {
     console.log("heyo maman from external search Module !");
