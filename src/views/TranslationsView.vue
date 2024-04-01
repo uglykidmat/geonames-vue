@@ -318,13 +318,29 @@ async function translationDelete(index) {
             column-gap: 1em;
             text-align: left;
             align-items: center;
+
+            .formbuttons {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                justify-items: center;
+                gap: 0.5em;
+
+                .deletebutton {
+                    border-color: var(--warning);
+
+                    &:hover {
+                        background-color: var(--warning);
+                        color: (--light);
+                    }
+                }
+            }
         }
     }
 }
 
 .translation-form-new {
     display: grid;
-    // grid-template-rows: 1fr;
     grid-template-columns: 1fr 1fr 1fr 2fr 0.5fr 1fr;
     column-gap: 0.5em;
     text-align: left;
@@ -397,7 +413,7 @@ ul {
         .translation-form-new {
             display: grid;
             grid-template-rows: 1fr 1fr 1fr 2fr 0.5fr 1fr;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             grid-auto-flow: column;
             column-gap: 0.2em;
             text-align: left;
@@ -416,6 +432,23 @@ ul {
             margin-top: 1em;
             flex-flow: column nowrap;
             line-height: 1;
+        }
+
+        .responsecontent {
+            .responserow {
+                display: grid;
+                grid-template-rows: 1fr 1fr;
+                grid-template-columns: 1fr 1fr 1fr;
+                grid-auto-flow: row;
+                column-gap: 0.2em;
+                text-align: center;
+                align-items: center;
+
+                .formbuttons {
+                    flex-flow: column nowrap;
+                    gap: 0.3em;
+                }
+            }
         }
     }
 }
