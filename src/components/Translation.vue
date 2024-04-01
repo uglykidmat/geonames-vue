@@ -51,8 +51,13 @@ function deleteTranslation(index) {
         <li>{{ CountryCode }}</li>
         <li v-if="!isEditActive && !translationDone">{{ OriginalName }}</li>
         <li v-if="translationDone">{{ newTranslation }}</li>
-        <input v-if="isEditActive" v-model="newTranslation"
-            @keydown.enter="$emit('updatename', newTranslation, Index); switchoff()" type="text" class="editblock" />
+        <!--OLD
+            <input v-if="isEditActive" v-model="newTranslation"
+            @keydown.enter="$emit('updatename', newTranslation, Index); switchoff()" type="text" class="editblock" />-->
+        <textarea v-if="isEditActive" v-model="newTranslation"
+            @keydown.enter="$emit('updatename', newTranslation, Index); switchoff()" cols="20" rows="4"
+            class="editblock"></textarea>
+
         <li>{{ Locale }}</li>
         <div class="formbuttons">
             <button v-if="!isEditActive" :id="`Button` + Index" class="editbutton"
@@ -78,20 +83,11 @@ input {
     border-bottom: 1px solid var(--dark);
 }
 
-.formbuttons {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-items: center;
-    gap: 0.5em;
-
-    .deletebutton {
-        border-color: var(--warning);
-
-        &:hover {
-            background-color: var(--warning);
-            color: (--light);
-        }
+.responserow {
+    textarea {
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.8rem;
+        background: none;
     }
 }
 </style>

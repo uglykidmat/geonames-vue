@@ -161,6 +161,14 @@ ul {
 }
 
 @media only screen and (min-width: 20em) and (max-width: 64em) {
+  .app {
+    main {
+      button {
+        margin: 0.3em;
+      }
+    }
+  }
+
   h2 {
     font-size: 2rem;
   }
