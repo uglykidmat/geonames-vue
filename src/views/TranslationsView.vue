@@ -388,4 +388,35 @@ ul {
         background-color: var(--grey-light-bkgnd);
     }
 }
+
+@media only screen and (min-width: 20em) and (max-width: 64em) {
+
+    .translations {
+        max-width: 66vw;
+
+        .translation-form-new {
+            display: grid;
+            grid-template-rows: 1fr 1fr 1fr 2fr 0.5fr 1fr;
+            grid-template-columns: 1fr 1fr;
+            grid-auto-flow: column;
+            column-gap: 0.2em;
+            text-align: left;
+            align-items: center;
+            padding: 0.5em;
+            border-radius: 0.9em;
+            border: 1px solid var(--dark);
+
+            div {
+                display: flex;
+                flex-flow: column nowrap;
+            }
+        }
+
+        .translation-form {
+            margin-top: 1em;
+            flex-flow: column nowrap;
+            line-height: 1;
+        }
+    }
+}
 </style>

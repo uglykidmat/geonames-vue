@@ -160,7 +160,7 @@ ul {
   }
 }
 
-@media only screen and (min-width: 20em) {
+@media only screen and (min-width: 20em) and (max-width: 64em) {
   h2 {
     font-size: 2rem;
   }

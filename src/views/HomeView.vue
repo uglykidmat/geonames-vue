@@ -82,7 +82,7 @@ import router from '../router';
     }
 }
 
-@media only screen and (min-width: 20em) {
+@media only screen and (min-width: 20em) and (max-width: 64em) {
     .home-page {
         display: flex;
         flex-flow: column nowrap;
