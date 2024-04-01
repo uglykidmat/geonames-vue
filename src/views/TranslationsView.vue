@@ -219,7 +219,6 @@ async function translationDelete(index) {
                 </div>
             </form>
         </div>
-
         <div class="translation-form">
             <label for="countrycodefield" class="form-input-label  form-search-label">Search by Country code </label>
             <input v-model="searchbycountrycode" type="text" maxlength="2" class="form-input capitalized"
@@ -409,6 +408,7 @@ ul {
 
     .translations {
         max-width: 66vw;
+        margin: auto;
 
         .translation-form-new {
             display: grid;
@@ -437,7 +437,7 @@ ul {
         .responsecontent {
             .responserow {
                 display: grid;
-                grid-template-rows: 1fr 1fr;
+                grid-template-rows: 30% 1fr;
                 grid-template-columns: 1fr 1fr 1fr;
                 grid-auto-flow: row;
                 column-gap: 0.2em;

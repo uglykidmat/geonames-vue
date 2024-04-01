@@ -55,7 +55,7 @@ function deleteTranslation(index) {
             <input v-if="isEditActive" v-model="newTranslation"
             @keydown.enter="$emit('updatename', newTranslation, Index); switchoff()" type="text" class="editblock" />-->
         <textarea v-if="isEditActive" v-model="newTranslation"
-            @keydown.enter="$emit('updatename', newTranslation, Index); switchoff()" cols="20" rows="4"
+            @keydown.enter="$emit('updatename', newTranslation, Index); switchoff()" cols="20" rows="3"
             class="editblock"></textarea>
 
         <li>{{ Locale }}</li>
@@ -88,6 +88,7 @@ input {
         font-family: 'Poppins', sans-serif;
         font-size: 0.8rem;
         background: none;
+        border-radius: 0.4em;
     }
 }
 </style>
