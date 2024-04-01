@@ -2,6 +2,7 @@
 const apiToken = import.meta.env.VITE_GEONAMES_TOKEN;
 const apiURL = import.meta.env.VITE_GEONAMES_URL;
 
+//import { translationClient } from './client/translationClientModule';
 import Translation from '../components/Translation.vue';
 import { ref } from 'vue';
 
@@ -128,8 +129,7 @@ async function postNewTranslation(geonameId, Fcode, countryCode, Name, Locale) {
         patchResponse.value = await response.json();
         // __________________________________________
         translationIsDone.value = false;
-        console.log("New translation :", newTranslation.countryCode);
-        //searchTranslationByCountryCode(newTranslation.countryCode);
+        searchTranslationByCountryCode(newTranslation.countryCode);
     } catch (error) {
         patchResponse.value = error;
         errorHappened.value = true;
@@ -139,9 +139,6 @@ async function postNewTranslation(geonameId, Fcode, countryCode, Name, Locale) {
 }
 
 async function translationDelete(index) {
-    console.log("DELETE!", index);
-    console.log(refParsedContent.value[index]);
-
     let deleteTranslationObject = new Object();
     deleteTranslationObject.geonameId = refParsedContent.value[index].geonameId;
     deleteTranslationObject.fcode = refParsedContent.value[index].fcode.toUpperCase();
@@ -193,8 +190,8 @@ async function translationDelete(index) {
             )" class="translation-form-new">
                 <div>
                     <label for="postgeonameid" class="form-input-label">GeonameId</label>
-                    <input type="text" class="form-input" name="postgeonameid" id="postgeonameid" placeholder="123456789"
-                        v-model="newTranslationForm.geonameId">
+                    <input type="text" class="form-input" name="postgeonameid" id="postgeonameid"
+                        placeholder="123456789" v-model="newTranslationForm.geonameId">
                 </div>
                 <div>
                     <label for="postfcode" class="form-input-label">Fcode</label>
@@ -251,10 +248,11 @@ async function translationDelete(index) {
                     <button class="cancelbutton" @click="searchTranslationByCountryCode">Cancel</button>
                 </div>
             </div>
-            <Translation v-for="(translation, index) in refParsedContent" :key="index" :GeonameId="translation.geonameId"
-                :CountryCode="translation.countryCode" :OriginalName="translation.name" :Fcode="translation.fcode"
-                :Locale="translation.locale" :Index="index" @updatename="updateName" @translationDone="translationDone"
-                @translationDelete="translationDelete" :Active="activeEdit" />
+            <Translation v-for="(translation, index) in refParsedContent" :key="index"
+                :GeonameId="translation.geonameId" :CountryCode="translation.countryCode"
+                :OriginalName="translation.name" :Fcode="translation.fcode" :Locale="translation.locale" :Index="index"
+                @updatename="updateName" @translationDone="translationDone" @translationDelete="translationDelete"
+                :Active="activeEdit" />
         </div>
     </div>
 </template>
@@ -388,6 +386,37 @@ ul {
 
     &:nth-child(even) {
         background-color: var(--grey-light-bkgnd);
+    }
+}
+
+@media only screen and (min-width: 20em) and (max-width: 64em) {
+
+    .translations {
+        max-width: 66vw;
+
+        .translation-form-new {
+            display: grid;
+            grid-template-rows: 1fr 1fr 1fr 2fr 0.5fr 1fr;
+            grid-template-columns: 1fr 1fr;
+            grid-auto-flow: column;
+            column-gap: 0.2em;
+            text-align: left;
+            align-items: center;
+            padding: 0.5em;
+            border-radius: 0.9em;
+            border: 1px solid var(--dark);
+
+            div {
+                display: flex;
+                flex-flow: column nowrap;
+            }
+        }
+
+        .translation-form {
+            margin-top: 1em;
+            flex-flow: column nowrap;
+            line-height: 1;
+        }
     }
 }
 </style>

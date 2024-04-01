@@ -19,8 +19,8 @@ async function loadCountryListByLocale() {
         responseContent.value = null;
         loader.value = true;
         const response = await fetch(
-            // apiURL + '/country/list/' + locale.value,
-            'https://127.0.0.1:8000/country/list/' + locale.value,
+            apiURL + '/country/list/' + locale.value,
+            //'https://127.0.0.1:8000/country/list/' + locale.value,
             {
                 method: "GET",
                 headers: { 'Authorization': `Basic ${apiToken}` }
