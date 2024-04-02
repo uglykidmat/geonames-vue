@@ -19,9 +19,9 @@ import router from '../router';
             </svg>
 
         </div>
-        <div class="homepush-bottom">
+        <!-- <div class="homepush-bottom">
             <h3>Paramètres</h3>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -75,11 +75,11 @@ import router from '../router';
         }
     }
 
-    .homepush-bottom {
-        grid-area: 3 / 1 / 4 / 4;
-        background-color: var(--grey-light-bkgnd);
-        text-align: justify;
-    }
+    // .homepush-bottom {
+    //     grid-area: 3 / 1 / 4 / 4;
+    //     background-color: var(--grey-light-bkgnd);
+    //     text-align: justify;
+    // }
 }
 
 @media only screen and (min-width: 20em) and (max-width: 64em) {
