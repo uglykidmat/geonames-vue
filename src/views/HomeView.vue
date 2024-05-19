@@ -40,7 +40,7 @@ import router from '../router';
     div {
         padding: 1.2em;
         border-radius: 1.5em;
-        min-height: fit-content;
+        height: fit-content;
     }
 
     .title {
