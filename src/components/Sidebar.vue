@@ -145,7 +145,7 @@ aside {
 
         .menu-toggle-wrap {
             top: -2.3rem;
-            right: 0.6rem;
+            //right: 0.6rem;
             margin-bottom: -1rem;
 
             .menu-toggle {

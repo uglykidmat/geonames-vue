@@ -161,6 +161,10 @@ ul {
 }
 
 @media only screen and (min-width: 20em) and (max-width: 64em) {
+  :root{
+    --sidebar-width: 350px;
+  }
+
   .app {
     main {
       button {
