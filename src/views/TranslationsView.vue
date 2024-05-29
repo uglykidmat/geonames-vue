@@ -5,9 +5,12 @@ const apiURL = import.meta.env.VITE_GEONAMES_URL;
 //import { translationClient } from './client/translationClientModule';
 import Translation from '../components/Translation.vue';
 import { ref } from 'vue';
+import { useVuelidate } from '@vuelidate/core';
+import { required, minLength, maxLength, numeric } from '@vuelidate/validators';
 
 const searchbycountrycode = ref('');
 const errorHappened = ref(false);
+const translationValidationErrorsHappened = ref(false);
 const loader = ref(false);
 const emptyResponse = ref(false);
 const refParsedContent = ref('');
@@ -86,6 +89,7 @@ function translationDone() {
 //NO TOUCHY\\
 function updateName(name, index) {
     parsedContent[index].name = name;
+    console.log(v$);
 }
 
 async function parsetoarray(parsedContent) {
@@ -102,7 +106,31 @@ const newTranslationForm = ref({
     Locale: '',
 });
 
+/// ______________________ VALIDATION_RULES
+
+const authorizedFcodes = ["ADM1","ADM2","ADM3"];
+const translationValidationRules = {
+    geonameId: { required, numeric }, 
+    Fcode: { required, minLength:minLength(4), maxLength:maxLength(4) },
+    countryCode: { required, minLength:minLength(2), maxLength:maxLength(2) },
+    Name: { required, minLength:minLength(2) },
+    Locale: { required, minLength:minLength(2) },
+    };
+
+const v$ = useVuelidate(translationValidationRules, newTranslationForm);
+
+/// ______________________
+
 async function postNewTranslation(geonameId, Fcode, countryCode, Name, Locale) {
+    translationValidationErrorsHappened.value = false;
+    let translationValidationErrors = await v$.value.$validate();
+
+    if (!translationValidationErrors) {
+        console.log(v$.value.$errors);
+        translationValidationErrorsHappened.value = true;
+        return null;
+    }
+    
     let newTranslation = new Object();
     newTranslation.geonameId = geonameId;
     newTranslation.fcode = Fcode.toUpperCase();
@@ -191,27 +219,51 @@ async function translationDelete(index) {
                 <div>
                     <label for="postgeonameid" class="form-input-label">GeonameId</label>
                     <input type="text" class="form-input" name="postgeonameid" id="postgeonameid"
-                        placeholder="123456789" v-model="newTranslationForm.geonameId">
+                    placeholder="123456789"
+                    v-model="newTranslationForm.geonameId">
+                    <span class="translationvalidationerrorspan" 
+                    v-for="error in v$.geonameId.$errors" :key="error.$uid">
+                    {{ error.$message }}
+                </span>
                 </div>
                 <div>
                     <label for="postfcode" class="form-input-label">Fcode</label>
                     <input type="text" class="form-input capitalized" name="postfcode" id="postfcode"
-                        placeholder='ADM1, COUNTRY,...' v-model="newTranslationForm.Fcode">
+                    placeholder='ADM1, COUNTRY,...'
+                    v-model="newTranslationForm.Fcode">
+                    <span class="translationvalidationerrorspan" 
+                    v-for="error in v$.Fcode.$errors" :key="error.$uid">
+                    {{ error.$message }}
+                </span>
                 </div>
                 <div>
                     <label for="postcountrycode" class="form-input-label">Country code</label>
                     <input type="text" maxlength="2" class="form-input capitalized" name="postcountrycode"
-                        id="postcountrycode" placeholder='CN, PL, ...' v-model="newTranslationForm.countryCode">
+                    id="postcountrycode" placeholder='CN, PL, ...'
+                    v-model="newTranslationForm.countryCode">
+                    <span class="translationvalidationerrorspan" 
+                    v-for="error in v$.countryCode.$errors" :key="error.$uid">
+                    {{ error.$message }}
+                </span>
                 </div>
                 <div>
                     <label for="postname" class="form-input-label">Name</label>
                     <input type="text" class="form-input form-input-name" name="postname" id="postname"
-                        placeholder="Your translation..." v-model="newTranslationForm.Name">
+                    placeholder="Your translation..."
+                    v-model="newTranslationForm.Name">
+                    <span class="translationvalidationerrorspan" 
+                    v-for="error in v$.Name.$errors" :key="error.$uid">
+                    {{ error.$message }}
+                </span>
                 </div>
                 <div>
                     <label for="postlocale" class="form-input-label">Locale</label>
                     <input type="text" class="form-input" name="postlocale" id="postlocale" placeholder="zh-tw, fr, ..."
                         v-model="newTranslationForm.Locale">
+                        <span class="translationvalidationerrorspan" 
+                    v-for="error in v$.Locale.$errors" :key="error.$uid">
+                    {{ error.$message }}
+                </span>
                 </div>
                 <div class="formbuttons">
                     <button>Add</button>
@@ -231,7 +283,9 @@ async function translationDelete(index) {
         <div v-if="errorHappened">
             <p>Error ! Could not reach the API.</p>
         </div>
-
+        <div v-if="translationValidationErrorsHappened">
+            <p>Error ! Invalid translation.</p>
+        </div>
         <div v-if="errorHappened" class="patchresponse">{{ patchResponse }}</div>
         <div v-if="patchOk" id="patchsuccess" class="patchresponse patchsuccess">{{ patchResponse }}</div>
         <div v-if="deleteOk" id="patchsuccess" class="patchresponse patchsuccess">{{ deleteResponse }}</div>
@@ -351,6 +405,10 @@ async function translationDelete(index) {
     div {
         display: flex;
         flex-flow: column nowrap;
+        span.translationvalidationerrorspan{
+            color:var(--warning);
+            font-size: 0.8em;
+        }
     }
 }
 
