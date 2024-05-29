@@ -89,7 +89,6 @@ function translationDone() {
 //NO TOUCHY\\
 function updateName(name, index) {
     parsedContent[index].name = name;
-    console.log(v$);
 }
 
 async function parsetoarray(parsedContent) {
@@ -126,7 +125,6 @@ async function postNewTranslation(geonameId, Fcode, countryCode, Name, Locale) {
     let translationValidationErrors = await v$.value.$validate();
 
     if (!translationValidationErrors) {
-        console.log(v$.value.$errors);
         translationValidationErrorsHappened.value = true;
         return null;
     }
@@ -271,7 +269,7 @@ async function translationDelete(index) {
                 </div>
             </form>
         </div>
-        <div class="translation-form">
+        <div id="searchbycountrycode" class="translation-form">
             <label for="countrycodefield" class="form-input-label  form-search-label">Search by Country code </label>
             <input v-model="searchbycountrycode" type="text" maxlength="2" class="form-input capitalized"
                 name="countrycodefield" id="countrycodefield" @keydown.enter="searchTranslationByCountryCode"
@@ -280,15 +278,13 @@ async function translationDelete(index) {
         </div>
         <span class="loader" v-if="loader"></span>
         <div v-if="emptyResponse && !loader">No translations yet !</div>
-        <div class="errormessage" v-if="errorHappened">
-            <p>Error ! Could not reach the API.</p>
-        </div>
         <div class="errormessage" v-if="translationValidationErrorsHappened">
             <p>Error ! Invalid translation.</p>
         </div>
-        <div v-if="errorHappened" class="patchresponse">{{ patchResponse }}</div>
-        <div v-if="patchOk" id="patchsuccess" class="patchresponse patchsuccess">{{ patchResponse }}</div>
-        <div v-if="deleteOk" id="patchsuccess" class="patchresponse patchsuccess">{{ deleteResponse }}</div>
+        <div v-if="errorHappened" id="errormessagebox" class="errormessage"><p>Error ! Could not reach the API.</p>{{ patchResponse }}</div>
+        <div v-if="patchOk && !errorHappened" id="patchsuccess" class="patchresponse patchsuccess">{{ patchResponse }}</div>
+        <div v-if="deleteOk" id="patchsuccess" class="patchresponse
+        patchsuccess">{{ deleteResponse }}</div>
         <div class="responsecontent" v-if="refParsedContent && !errorHappened && !emptyResponse">
             <div id="responserowtitle" class="responserow">
                 <div>GeonameId</div>
@@ -409,6 +405,7 @@ async function translationDelete(index) {
     div {
         display: flex;
         flex-flow: column nowrap;
+        //align-items: flex-start;
         span.translationvalidationerrorspan{
             color:var(--warning);
             font-size: 0.8em;
