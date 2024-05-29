@@ -155,7 +155,7 @@ async function postNewTranslation(geonameId, Fcode, countryCode, Name, Locale) {
         patchResponse.value = await response.json();
         // __________________________________________
         translationIsDone.value = false;
-        searchTranslationByCountryCode(newTranslation.countryCode);
+        // searchTranslationByCountryCode(newTranslation.countryCode);
     } catch (error) {
         patchResponse.value = error;
         errorHappened.value = true;
