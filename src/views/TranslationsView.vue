@@ -280,10 +280,10 @@ async function translationDelete(index) {
         </div>
         <span class="loader" v-if="loader"></span>
         <div v-if="emptyResponse && !loader">No translations yet !</div>
-        <div v-if="errorHappened">
+        <div class="errormessage" v-if="errorHappened">
             <p>Error ! Could not reach the API.</p>
         </div>
-        <div v-if="translationValidationErrorsHappened">
+        <div class="errormessage" v-if="translationValidationErrorsHappened">
             <p>Error ! Invalid translation.</p>
         </div>
         <div v-if="errorHappened" class="patchresponse">{{ patchResponse }}</div>
@@ -315,6 +315,10 @@ async function translationDelete(index) {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+
+    .errormessage{
+        color:var(--warning);
+    }
 
     .capitalized {
         text-transform: uppercase;
