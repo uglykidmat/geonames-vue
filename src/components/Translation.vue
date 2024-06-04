@@ -51,24 +51,28 @@ function deleteTranslation(index) {
         <li>{{ CountryCode }}</li>
         <li v-if="!isEditActive && !translationDone">{{ OriginalName }}</li>
         <li v-if="translationDone">{{ newTranslation }}</li>
-        <!--OLD
-            <input v-if="isEditActive" v-model="newTranslation"
-            @keydown.enter="$emit('updatename', newTranslation, Index); switchoff()" type="text" class="editblock" />-->
+        <!--OLD <input v-if="isEditActive" v-model="newTranslation"
+            @keydown.enter="$emit('updatename', newTranslation, Index);
+            switchoff()" type="text" class="editblock" />-->
         <textarea v-if="isEditActive" v-model="newTranslation"
-            @keydown.enter="$emit('updatename', newTranslation, Index); switchoff()" cols="20" rows="3"
-            class="editblock"></textarea>
+        @keydown.enter="$emit('updatename', newTranslation, Index); switchoff()"
+        cols="20" rows="3" class="editblock"></textarea>
 
         <li>{{ Locale }}</li>
         <div class="formbuttons">
-            <button v-if="!isEditActive" :id="`Button` + Index" class="editbutton"
-                @click="$emit('translationDone'); editTranslation(OriginalName)">Edit</button>
+            <button v-if="!isEditActive" :id="`Button` + Index"
+            class="editbutton" @click="$emit('translationDone');
+            editTranslation(OriginalName)">Edit</button>
 
-            <button v-if="!isEditActive" :id="`deletebutton` + Index" class="deletebutton"
-                @click="$emit('translationDelete', Index); deleteTranslation(Index)">Delete</button>
+            <button v-if="!isEditActive" :id="`deletebutton` + Index"
+            class="deletebutton" @click="$emit('translationDelete', Index);
+            deleteTranslation(Index)">Delete</button>
 
             <button v-if="isEditActive" class="editbutton"
-                @click="$emit('updatename', newTranslation, Index); switchoff()">Save</button>
-            <button v-if="isEditActive" class="cancelbutton" @click="cancelTranslation(OriginalName)">Cancel</button>
+            @click="$emit('updatename', newTranslation, Index);
+            switchoff()">Save</button>
+            <button v-if="isEditActive" class="cancelbutton"
+            @click="cancelTranslation(OriginalName)">Cancel</button>
         </div>
     </ul>
 </template>
